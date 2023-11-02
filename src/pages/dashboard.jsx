@@ -1,36 +1,52 @@
 import SideBar from '../component/sidebar/sidebar'
 import Header from '../component/hearder/header'
 import StatisticCard from '../component/dashboard/statisticcard';
+import { useEffect, useState } from 'react';
+import useGetAllProduct from '../hooks/product/getallproducts';
+import useGetAllCategory from '../hooks/category/getallcategory';
+import useGetAllBrand from '../hooks/brand/getallbrand';
+import Footer from '../component/footer/footer';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import placeholder from "../assets/images/placeholder.jpg"
 
 const Dashboard = () => {
+  const [menu, setMenu] = useState(false);
+  const { getAllProduct, loading, data } = useGetAllProduct()
+  const { getAllCategory, loading: categoryLoading, data: categoryData } = useGetAllCategory()
+  const { getAllBrand, loading:brandLoading, data: brandData } = useGetAllBrand()
+  useEffect(()=>{
+    menu ? 
+    document.body.className = 'side-menu-closed'
+    :
+    document.body.className = 'side-menu-open';
+  }, [menu])
+
+  useEffect(()=>{
+    getAllProduct()
+    getAllCategory()
+    getAllBrand()
+  }, [])
+
+  
   return (
     <>
       <div className="aiz-main-wrapper">
         {/* sidebar */}
-        <SideBar />
+        {!menu && <SideBar setMenu={setMenu} />}
 
         <div className="aiz-content-wrapper">
           {/* Header */}
-          <Header />
+          <Header setMenu={setMenu} />
           {/* .aiz-topbar */}
 
           <div className="aiz-main-content">
             <div className="px-15px px-lg-25px">
-              <div className="alert alert-danger d-flex align-items-center">
-                Please Configure SMTP Setting to work all email sending
-                functionality,
-                <a
-                  className="alert-link ml-2"
-                  href="https://shop.activeitzone.com/admin/smtp-settings"
-                >
-                  Configure Now
-                </a>
-              </div>
               <div className="row">
-                <StatisticCard title='Total Customers' amount='40' icon='customer' color='#91A8D0' />
-                <StatisticCard title='Total Products' amount='307' icon='product' color='#F0C05A' />
-                <StatisticCard title='Total Orders' amount='203' icon='order' color='#7BC4C4' />
-                <StatisticCard title='Total Sales' amount='$67,519.59' icon='sale' color='#FF6F61' />
+                <StatisticCard title='Total Customers' amount='40' icon='customer' color='#91A8D0' loading={loading} />
+                <StatisticCard title='Total Products' amount={data?.length} icon='product' color='#F0C05A' loading={loading} />
+                <StatisticCard title='Total Orders' amount='203' icon='order' color='#7BC4C4' loading={loading} />
+                <StatisticCard title='Total Sales' amount='$67,519.59' icon='sale' color='#FF6F61' loading={loading} />
               </div>
               <div className="row mb-3">
                 <div className="col-xl-3 col-md-6">
@@ -61,7 +77,7 @@ const Dashboard = () => {
                     <div className="col-6">
                       <div className="rounded-lg p-3 d-flex align-items-center border mb-4 bg-light">
                         <div className="flex-grow-1 py-5px">
-                          <div className="fs-20 fw-700 opacity-90">81</div>
+                          <div className="fs-20 fw-700 opacity-90">{categoryLoading ? <FontAwesomeIcon icon={faSpinner} size="lg" spin/> : categoryData === null ? '0' : categoryData.length}</div>
                           <div className="opacity-60">Total Category</div>
                         </div>
                         <svg
@@ -82,7 +98,8 @@ const Dashboard = () => {
                     <div className="col-6">
                       <div className="rounded-lg p-3 d-flex align-items-center border mb-4 bg-light">
                         <div className="flex-grow-1 py-5px">
-                          <div className="fs-20 fw-700 opacity-90">50</div>
+                          <div className="fs-20 fw-700 opacity-90">
+                          <div className="fs-20 fw-700 opacity-90">{brandLoading ? <FontAwesomeIcon icon={faSpinner} size="lg" spin/> : brandData === null ? '0' : brandData.length}</div></div>
                           <div className="opacity-60">Total Brands</div>
                         </div>
                         <svg
@@ -322,24 +339,30 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="col-xl-3 col-md-6">
-                  <div className="border rounded-lg px-4 pt-4 pb-3">
+                  <div className="border rounded-lg px-4 pt-4 pb-3" style={{height: "100%"}}>
                     <div className="fs-16 fw-700 mb-2">Top Category</div>
                     <ul className="list-group list-group-raw">
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <img alt=''
-                          src="https://shop.activeitzone.com/public/uploads/all/kwYXmOKkm91XWRfGF8h8hVriGoPyOmhSmgi5InAJ.png"
-                          data-src="https://shop.activeitzone.com/public/uploads/all/kwYXmOKkm91XWRfGF8h8hVriGoPyOmhSmgi5InAJ.png"
-                          className="size-50px rounded lazyloaded"
-                          onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                        />
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Cellphones &amp; Tabs
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $19,354.70
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
+                    {
+                          categoryLoading ? <p>loading</p> :categoryData?.map((category, index)=>{
+                            return (
+                              <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
+                                <img alt=''
+                                  src={category.category_image}
+                                  data-src={category.category_image}
+                                  className="size-50px rounded lazyloaded"
+                                  onerror={`this.onerror=null;this.src=${placeholder};`}
+                                />
+                                <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
+                                  {category.category}
+                                </div>
+                                <div className="ml-auto mr-0 fw-600 text-danger">
+                                  $19,354.70
+                                </div>
+                              </li>
+                            )
+                          })
+                        }
+                      {/* <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
                         <img alt=''
                           src="https://shop.activeitzone.com/public/uploads/all/D5dhekz6XMXvgXrjAxBrHvXGWvIEX2advil097AT.png"
                           data-src="https://shop.activeitzone.com/public/uploads/all/D5dhekz6XMXvgXrjAxBrHvXGWvIEX2advil097AT.png"
@@ -408,7 +431,7 @@ const Dashboard = () => {
                         <div className="ml-auto mr-0 fw-600 text-danger">
                           $5,253.38
                         </div>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 </div>
@@ -568,730 +591,93 @@ const Dashboard = () => {
                   data-md-items={3}
                   data-sm-items={2}
                 >
-                  <div className="slick-list draggable">
+                  <div className="slick-list draggable client-overflow-scroll" style={{overflowX: "scroll"}}>
                     <div
                       className="slick-track flex"
                       style={{
                         opacity: 1,
-                        width: 1860,
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: "flex-start",
+                        alignItems: 'center',
                         transform: "translate3d(0px, 0px, 0px)",
                       }}
                     >
-                      <div
-                        className="slick-slide slick-current slick-active"
-                        data-slick-index={0}
-                        aria-hidden="false"
-                        style={{ width: 155 }}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/asus-rog-phone-ii-zs660kl"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={0}
+                      {
+                          loading ? <p>loading</p> :data?.map((product, index)=>{
+                            return (
+                              
+                              <div
+                              className="slick-slide slick-current slick-active"
+                              data-slick-index={0}
+                              aria-hidden="false"
+                              style={{ width:'253px' }}
+                              key={index}
+                            >
+                              <div>
+                                <div
+                                  className="carousel-box"
+                                  style={{ width: "253px", display: "inline-block" }}
                                 >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/eAyjUaOrohoDCUY4tR9SxpkcaqEBCxWw0uNjCSqi.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/eAyjUaOrohoDCUY4tR9SxpkcaqEBCxWw0uNjCSqi.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <span className="fw-700 text-primary">
-                                    $301.00
-                                  </span>
+                                  <div className="aiz-card-box border rounded mb-2 bg-white">
+                                    <div className="position-relative" style={{width: "100%"}}>
+                                      <a
+                                        href="#"
+                                        className="d-block"
+                                        target="_blank"
+                                        tabIndex={0}
+                                      >
+                                        <img alt=''
+                                          className="img-fit mx-auto h-210px lazyloaded"
+                                          src={`${product.images[0].image}`}
+                                          data-src={`${product.images[0].image}`}
+                                          onerror={`this.onerror=null;this.src=${placeholder};`}
+                                        />
+                                      </a>
+                                    </div>
+                                    <div className="p-md-3 p-2 text-left">
+                                      <div className="fs-15">
+                                        <del className="fw-600 opacity-50 mr-1">
+                                          {product.discount.isdiscount && `$${product.price}`}
+                                        </del>
+                                        <span className="fw-700 text-primary">
+                                          {product.discount.isdiscount ? `$${product.discount.discount_price}` : `$${product.price}`}
+                                        </span>
+                                      </div>
+                                      <div className="rating rating-sm mt-1">
+                                        <i className="las la-star active" />
+                                        <i className="las la-star active" />
+                                        <i className="las la-star active" />
+                                        <i className="las la-star active" />
+                                        <i className="las la-star half" />
+                                      </div>
+                                      <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
+                                        <a
+                                          href="/product/5-adidas-mens-running-shoes-xmvt8"
+                                          className="d-block text-reset"
+                                          target="_blank"
+                                          tabIndex={0}
+                                          style={{textTransform: "capitalize"}}
+                                        >
+                                          {product.name}
+                                        </a>
+                                      </h3>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star half" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/asus-rog-phone-ii-zs660kl"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={0}
-                                  >
-                                    ASUS ROG Phone 2 (New) Unlocked GSM US
-                                    Version &amp; Warranty
-                                  </a>
-                                </h3>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide slick-active"
-                        data-slick-index={1}
-                        aria-hidden="false"
-                        style={{ width: 155 }}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/5-adidas-mens-running-shoes-xmvt8"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={0}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/CtZC5bRWpgDGKdakd44TvCsJ4jwPfzl1GjS3Mz3N.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/CtZC5bRWpgDGKdakd44TvCsJ4jwPfzl1GjS3Mz3N.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $81.60
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $65.28
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star half" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/5-adidas-mens-running-shoes-xmvt8"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={0}
-                                  >
-                                    Women Sleeveless Lace Patchwork Deep V-Neck
-                                    A Line Flared Party Dress
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={2}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/5-adidas-mens-running-shoes-lkk2p"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/ByeVzjm9wUbcwaeYeCPI6CQn6jhXjWEGuTs4079O.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/ByeVzjm9wUbcwaeYeCPI6CQn6jhXjWEGuTs4079O.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $183.60
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $146.88
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/5-adidas-mens-running-shoes-lkk2p"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    Nike Air Women's Velour Jacket
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={3}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/5-adidas-mens-running-shoes-jg8w6"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/2WwMTy7pGgdDCozZHJaWzj2fZwo13dsjobRgi5T4.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/2WwMTy7pGgdDCozZHJaWzj2fZwo13dsjobRgi5T4.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $66.30
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $59.67
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star half" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/5-adidas-mens-running-shoes-jg8w6"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    Women's Sleeveless Chiffon Tiered Cocktail
-                                    Dress Petite and Missy
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={4}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/5-adidas-mens-running-shoes-69gwg"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/QOlVTGx6mmXKwHzl0NLFB28vzTIgTuxXdc1XJKe9.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/QOlVTGx6mmXKwHzl0NLFB28vzTIgTuxXdc1XJKe9.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $99.99
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $96.99
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/5-adidas-mens-running-shoes-69gwg"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    Apple iPhone 11 (128GB) - Yellow
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={5}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/6-men-slim-fit-checkered-spread-collar-casual-shirt-ihcer"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/KKvhdcV29Rh3BPbXvCVCjDoTbg3gIXe05CRlSUkW.webp"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/KKvhdcV29Rh3BPbXvCVCjDoTbg3gIXe05CRlSUkW.webp"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $800.00
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $720.10
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/6-men-slim-fit-checkered-spread-collar-casual-shirt-ihcer"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    2021 Apple 12.9-inch iPad Pro (Wiâ‘Fi,
-                                    256GB) - Space Gray
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={6}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/5-adidas-mens-running-shoes-6nydc"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/MXdgA88J5OpOFeklOuehEAZ65hy8XKmN8gFijd2y.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/MXdgA88J5OpOFeklOuehEAZ65hy8XKmN8gFijd2y.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $191.90
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $182.31
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/5-adidas-mens-running-shoes-6nydc"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    OnePlus Nord CE 5G Smartphone with Quad
-                                    Camera, Dual SIM
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={7}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/5-adidas-mens-running-shoes-ubnlk"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/S9YqMcqnG3PBP3auNCAVLiKbSTPLRwioKCmM7OBv.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/S9YqMcqnG3PBP3auNCAVLiKbSTPLRwioKCmM7OBv.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <span className="fw-700 text-primary">
-                                    $252.50
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/5-adidas-mens-running-shoes-ubnlk"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    Apple iPhone XR Black Display (1792 x 828)
-                                    pixels
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={8}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/6-men-slim-fit-checkered-spread-collar-casual-shirt-0fwi3"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/Ox2fJZjezhY2uqkI5XArrVqTiRfl4flpxlOnSKe1.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/Ox2fJZjezhY2uqkI5XArrVqTiRfl4flpxlOnSKe1.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <span className="fw-700 text-primary">
-                                    $255.00
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/6-men-slim-fit-checkered-spread-collar-casual-shirt-0fwi3"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    Apple iPhone 13 Pro Max 17 cm (6.7") 128 GB
-                                    Dual SIM 5G Blue iOS 14 iPhone
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={9}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/6-men-slim-fit-checkered-spread-collar-casual-shirt-ijxnw"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit mx-auto h-210px lazyloaded"
-                                    src="https://shop.activeitzone.com/public/uploads/all/rE0CkcpkcGy2H2KduuukPXTbcfP81IA2ixePZ8c8.png"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/rE0CkcpkcGy2H2KduuukPXTbcfP81IA2ixePZ8c8.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $402.99
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $382.84
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/6-men-slim-fit-checkered-spread-collar-casual-shirt-ijxnw"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    Apple iPhone 12 Pro Max 17 cm (6.7") 128 GB
-                                    Dual SIM 5G Blue iOS 14
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={10}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/1-adidas-mens-running-shoes-gjmks"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit lazyload mx-auto h-210px"
-                                    src="https://shop.activeitzone.com/public/assets/img/placeholder.jpg"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/KorbBNbxqdHYBKAbMvLH8W1OXdKnHIpd0jtI8wOh.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $303.00
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $287.85
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                  <i className="las la-star active" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/1-adidas-mens-running-shoes-gjmks"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    OnePlus 8 (Glacial Green 8GB RAM+128GB
-                                    Storage)
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="slick-slide"
-                        data-slick-index={11}
-                        aria-hidden="true"
-                        style={{ width: 155 }}
-                        tabIndex={-1}
-                      >
-                        <div>
-                          <div
-                            className="carousel-box"
-                            style={{ width: "100%", display: "inline-block" }}
-                          >
-                            <div className="aiz-card-box border rounded mb-2 bg-white">
-                              <div className="position-relative">
-                                <a
-                                  href="/product/mobil-1-extended-performance-full-synthetic-motor-oil-5w-30-5-quart-na5lj"
-                                  className="d-block"
-                                  target="_blank"
-                                  tabIndex={-1}
-                                >
-                                  <img alt=''
-                                    className="img-fit lazyload mx-auto h-210px"
-                                    src="https://shop.activeitzone.com/public/assets/img/placeholder.jpg"
-                                    data-src="https://shop.activeitzone.com/public/uploads/all/5ywHNpwAY6dNOapwWjUgLoeYsm18ZRwdU5PzXqJM.png"
-                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public/assets/img/placeholder.jpg';"
-                                  />
-                                </a>
-                              </div>
-                              <div className="p-md-3 p-2 text-left">
-                                <div className="fs-15">
-                                  <del className="fw-600 opacity-50 mr-1">
-                                    $70.00
-                                  </del>
-                                  <span className="fw-700 text-primary">
-                                    $68.00
-                                  </span>
-                                </div>
-                                <div className="rating rating-sm mt-1">
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                  <i className="las la-star" />
-                                </div>
-                                <h3 className="fw-600 fs-13 text-truncate-2 lh-1-4 mb-0">
-                                  <a
-                                    href="/product/mobil-1-extended-performance-full-synthetic-motor-oil-5w-30-5-quart-na5lj"
-                                    className="d-block text-reset"
-                                    target="_blank"
-                                    tabIndex={-1}
-                                  >
-                                    Mobil 1 96936 20W-50 V-Twin Synthetic
-                                    Motocycle Motor Oil - 1 Quart
-                                  </a>
-                                </h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                            )
+                          })
+                        }
+                      
+                    
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white text-center py-3 px-15px px-lg-25px mt-auto">
-              <p className="mb-0">© The Shop 2.9</p>
-            </div>
+            <Footer />
           </div>
           {/* .aiz-main-content */}
         </div>

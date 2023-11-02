@@ -5,8 +5,9 @@ import en from '../../assets/images/flags/en.png';
 import fr from '../../assets/images/flags/fr.png';
 import inn from '../../assets/images/flags/in.png';
 import sa from '../../assets/images/flags/sa.png';
+import logo from "../../assets/images/logo/logo.png"
 
-const Header = () => {
+const Header = ({setMenu}) => {
   return (
     <>
       <div className="aiz-topbar border-bottom px-15px px-lg-25px d-flex align-items-stretch justify-content-between">
@@ -15,7 +16,7 @@ const Header = () => {
             className="aiz-topbar-nav-toggler d-flex align-items-center justify-content-start mr-2 mr-md-3"
             data-toggle="aiz-mobile-nav"
           >
-            <button className="btn btn-icon btn-outline-secondary border-gray-300 p-0 d-flex align-items-center justify-content-center">
+            <button onClick={()=> setMenu(prev => !prev)} className="btn btn-icon btn-outline-secondary border-gray-300 p-0 d-flex align-items-center justify-content-center">
               <span className="aiz-mobile-toggler d-inline-block">
                 <span />
               </span>
@@ -24,9 +25,9 @@ const Header = () => {
           <div className="aiz-topbar-logo-wrap d-xl-none d-flex align-items-center justify-content-start">
             <Link to="#" className="d-block">
               <img
-                src="https://shop.activeitzone.com/public/uploads/all/CZOY12JMJOU8D73wMnx25x9eMXFGPdHgRdxi4zuh.png"
+                src={logo}
                 className="brand-icon"
-                alt="The Shop"
+                alt="Altinsmart"
               />
             </Link>
           </div>

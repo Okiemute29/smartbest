@@ -19,8 +19,8 @@ use custom-style.css
     --white: #fff;
     --gray: #6c757d;
     --gray-dark: #343a40;
-    --primary: #f5a100;
-    --hov-primary: #f5a100;
+    --primary: #6200EE;
+    --hov-primary: #330277;
     --soft-primary: rgba(245, 161, 0, 0.15);
     --secondary: #8f97ab;
     --soft-secondary: rgba(143, 151, 171, 0.15);
@@ -65,6 +65,7 @@ use custom-style.css
     --tag-hide-transition: 0.3s;
     --loader-size: 0.8em;
 }
+
 pre {
     white-space: initial;
 }
@@ -73,6 +74,9 @@ small {
     opacity: 0.6;
 }
 
+.client-overflow-scroll::-webkit-scrollbar-track, .client-overflow-scroll::-webkit-scrollbar {
+    display: none;
+}
 /* common helper utilites */
 .c-scrollbar::-webkit-scrollbar {
     width: 4px;
@@ -6251,7 +6255,7 @@ button:hover .aiz-mobile-toggler span:after {
     box-shadow: none;
 }
 .aiz-topbar-logo-wrap img {
-    height: 30px;
+    height: 130px;
 }
 .aiz-topbar-user,
 .aiz-topbar-user:hover {
@@ -6359,7 +6363,7 @@ button:hover .aiz-mobile-toggler span:after {
 }
 
 .aiz-side-nav-logo-wrap img {
-    height: 31px;
+    height: 65px;
 }
 .aiz-side-nav-logo-wrap {
     background-color: #212121;

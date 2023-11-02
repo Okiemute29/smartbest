@@ -4,6 +4,7 @@ import _route from "../constants/routes"
 import useSignUpUser from "../hooks/auth/usesignup"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import logo from "../assets/images/logo/logo1.png"
 
 
 const SignUp = () => {
@@ -32,7 +33,7 @@ const SignUp = () => {
                                     <div className="absolute-full bg-white opacity-70" />
                                     <div className="card-body position-relative z-1">
                                         <div className="mb-4 text-center">
-                                        <img src="https://shop.activeitzone.com/public/uploads/all/R944f38sMNiOZFocJZTXMLStB9gixao0i0xqyaf9.png" alt="logo" className="mw-100 mb-4 mx-auto h-[40px]" />
+                                        <img src={logo} style={{width: "50%"}} alt="logo" className="mw-100 mx-auto " />
                                         <h1 className="h3 text-primary mb-0 border-top text-uppercase pt-3" style={{borderColor: '#fff !important'}}>Welcome</h1>
                                         <p className="fs-15 opacity-80">Create an account.</p>
                                         </div>
@@ -86,9 +87,9 @@ const SignUp = () => {
                                             {loading ? <FontAwesomeIcon icon={faSpinner} size="lg" spin/> :'SignUp'}
                                         </button>
                                         <div className="row mb-2">
-                                            <div className="col-sm-6">
+                                            <div className="col-12">
                                                 <div className="text-left">
-                                                    <label className="aiz-checkbox">
+                                                    <label style={{paddingLeft: "0"}} className="aiz-checkbox">
                                                         <span>Already a member? <Link to={_route._signin} className="text-primary">Login</Link></span>
                                                     </label>
                                                 </div>

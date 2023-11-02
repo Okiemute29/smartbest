@@ -20,7 +20,7 @@ function addTokentoRequest() {
   if (token) {
     return {
       headers: {
-        "Authorization": token,
+        "Authorization":`Bearer ${token}`,
       }
     };
   }

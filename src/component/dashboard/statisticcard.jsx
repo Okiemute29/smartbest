@@ -1,6 +1,9 @@
 import Icon from "../icon/icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-const StatisticCard = ({title, amount, icon, color}) => {
+const StatisticCard = ({title, amount, icon, color, loading}) => {
+  console.log(loading)
   return (
     <>
         <div className="col-xl-3 col-md-6">
@@ -10,7 +13,10 @@ const StatisticCard = ({title, amount, icon, color}) => {
             >
             <div className="pb-5">
                 <div className="fw-500">{title}</div>
-                <div className="h2 fw-700">{amount}</div>
+                <div className="h2 fw-700">
+                {loading ? <FontAwesomeIcon icon={faSpinner} size="lg" spin/> :amount}
+                </div>
+                
             </div>
             {console.log(icon)}
             {icon === 'customer' && <Icon customer={icon} />}

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import logo from "../assets/images/logo/logo.png"
 
 
 const ForgotPassword = () => {
@@ -21,7 +22,7 @@ const ForgotPassword = () => {
                                     <div className="absolute-full bg-white opacity-70" />
                                     <div className="card-body position-relative z-1">
                                         <div className="mb-4 text-center">
-                                        <img src="https://shop.activeitzone.com/public/uploads/all/R944f38sMNiOZFocJZTXMLStB9gixao0i0xqyaf9.png" alt="logo" className="mw-100 mb-4 mx-auto h-[40px]" />
+                                        <img src={logo} alt="logo" className="mw-100 mx-auto h-[100px]" />
                                         <h1 className="h3 text-primary mb-0 border-top text-uppercase pt-3" style={{borderColor: '#fff !important'}}>Welcome</h1>
                                         <p className="fs-15 opacity-80">Enter your email and we'll send you a link to reset your password.</p>
                                         </div>

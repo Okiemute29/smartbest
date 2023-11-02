@@ -1,3 +1,7 @@
 export const _signUpUser = process.env.REACT_APP_BASE_URL + "/admin/signup"
 export const _logInUser = process.env.REACT_APP_BASE_URL + "/admin/login"
 export const _forgotPassword = process.env.REACT_APP_BASE_URL + "/admin/forgot-password"
+export const _getAllProduct = process.env.REACT_APP_BASE_URL + "/admin/retrieve/all/product"
+export const _getAllCategory = process.env.REACT_APP_BASE_URL + "/admin/retrieve/all/category"
+export const _getAllBrand = process.env.REACT_APP_BASE_URL + "/admin/retrieve/all/brand"
+export const _postBrand = process.env.REACT_APP_BASE_URL + "/admin/create/brand"

@@ -4,7 +4,7 @@ import _route from "../constants/routes"
 import useLoginUser from "../hooks/auth/uselogin"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-// import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import logo from "../assets/images/logo/logo1.png"
 
 
 const Login = () => {
@@ -31,7 +31,7 @@ const Login = () => {
                                     <div className="absolute-full bg-white opacity-70" />
                                     <div className="card-body position-relative z-1">
                                         <div className="mb-4 text-center">
-                                        <img src="https://shop.activeitzone.com/public/uploads/all/R944f38sMNiOZFocJZTXMLStB9gixao0i0xqyaf9.png" alt="logo" className="mw-100 mb-4 mx-auto h-[40px]" />
+                                        <img src={logo} alt="logo" style={{width: "50%"}} className="mw-100 mx-auto" />
                                         <h1 className="h3 text-primary mb-0 border-top text-uppercase pt-3" style={{borderColor: '#fff !important'}}>Welcome</h1>
                                         <p className="fs-15 opacity-80">Login to your account.</p>
                                         </div>
@@ -60,32 +60,21 @@ const Login = () => {
                                             />
                                         </div>
                                         <div className="row mb-2">
-                                            <div className="col-sm-6">
+                                            <div className="col-12">
                                             <div className="text-left">
-                                                <label className="aiz-checkbox">
+                                                <label  style={{paddingLeft: "0"}} className="aiz-checkbox">
                                                     <Link to={_route._forgotpassword} className="text-xs text-primary">Forgot Password</Link>
                                                 </label>
                                             </div>
                                             </div>
                                         </div>
-                                        {/* <div className="row mb-2">
-                                            <div className="col-sm-6">
-                                            <div className="text-left">
-                                                <label className="aiz-checkbox">
-                                                <input type="checkbox" name="remember" id="remember" />
-                                                <span>Remember Me</span>
-                                                <span className="aiz-square-check bg-white" />
-                                                </label>
-                                            </div>
-                                            </div>
-                                        </div> */}
                                         <button type="submit" className="w-full text-white bg-primary btn-block p-2">
                                             {loading ? <FontAwesomeIcon icon={faSpinner} size="lg" spin/> :'Login'}
                                         </button>
                                         <div className="row mb-2">
-                                            <div className="col-sm-6">
+                                            <div className="col-12">
                                                 <div className="text-left">
-                                                    <label className="aiz-checkbox">
+                                                    <label style={{paddingLeft: "0"}} className="aiz-checkbox">
                                                         <span>Don't have an account? <Link to={_route._signup} className="text-primary">Signup</Link></span>
                                                     </label>
                                                 </div>

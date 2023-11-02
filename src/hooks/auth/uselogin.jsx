@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import AuthService from "../../services/user/auth";
 import { useDispatch } from 'react-redux'
-import { Warning } from "../../component/toastify/toastify";
+import { Error, Warning } from "../../component/toastify/toastify";
 import { setUser } from "../../redux/authreducer"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -29,25 +29,26 @@ const useLoginUser = () => {
                 console.log(res)
                 setloading(true);
                 if(res.status === 200){
-                    await dispatch(setUser(res.data))
-                    localStorage.setItem("user", JSON.stringify(res.data));
+                    await dispatch(setUser(res.data.data))
+                    localStorage.setItem("user", JSON.stringify(res.data.data));
                     navigate(_route._dashboard)
                     
                 }
             }
             
         } catch (error) {
-            console.log(error)
+            console.log(error.response)
             setloading(false);
             if (axios.isCancel(error)) {
+                Warning('An Error Occured')
                 console.log(error);
             }
-            // else if(error.response.status === 498){
+            else if(error.response){
 
-            //     await logOutUser();
-            // } else {
-            //     // errorhandling(error)
-            // }
+                Error(error.response.data.message)
+            } else {
+                Warning('An Error Occured')
+            }
         }
        
     }

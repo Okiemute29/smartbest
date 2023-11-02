@@ -1,9 +1,13 @@
 import {useState} from "react";
 import { Link, NavLink } from "react-router-dom";
 import _route from "../../constants/routes";
+import logo from "../../assets/images/logo/logo1.png"
 
-const SideBar = () => {
+const SideBar = ({setMenu}) => {
   const [showPos, setShowPos] = useState(null)
+  const [showSellerProduct, setShowSellerProduct] = useState(null)
+
+
   return (
     <>
       <div className="aiz-sidebar-wrap">
@@ -15,8 +19,8 @@ const SideBar = () => {
             >
               <img
                 className="mw-100"
-                src="https://shop.activeitzone.com/public/uploads/all/a6AFIhcUdqfgZfhJslNQbkbT9I5ulkxVJglx2xI5.png"
-                alt="The Shop"
+                src={logo}
+                alt="Altinsmart"
               />
             </Link>
           </div>
@@ -49,7 +53,7 @@ const SideBar = () => {
                 </NavLink>
               </li>
               <li className={`aiz-side-nav-item  ${showPos === 'pos' && 'mm-active'}`}>
-                <a href="#" className="aiz-side-nav-link" onClick={() => setShowPos(prev => prev === 'pos' ? null : 'pos' )}>
+                <a href="javascript:void(0);" className="aiz-side-nav-link" onClick={() => setShowPos(prev => prev === 'pos' ? null : 'pos' )}>
                   <svg
                     id="Group_22661"
                     data-name="Group 22661"
@@ -96,26 +100,26 @@ const SideBar = () => {
                   <li className="aiz-side-nav-item">
                     <NavLink
                       to={_route._pos_manager} 
-                      className={(isActive) => "aiz-side-nav-link " }
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">POS Manager</span>
                     </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link"
+                    <NavLink
+                      to={_route._pos_activation}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">
                         POS Configuration
                       </span>
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </li>
               {/* Product */}
-              <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+              <li className={`aiz-side-nav-item  ${showPos === 'product' && 'mm-active'}`}>
+                <a href="javascript:void(0);"  className="aiz-side-nav-link"  onClick={() => setShowPos(prev => prev === 'product' ? null : 'product' )}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={16}
@@ -147,94 +151,94 @@ const SideBar = () => {
                   <span className="aiz-side-nav-arrow" />
                 </a>
                 {/*Submenu*/}
-                <ul className="aiz-side-nav-list level-2 mm-collapse">
+                <ul className={`aiz-side-nav-list level-2 mm-collapse ${showPos === 'product' && 'mm-show'}`}>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link "
+                    <NavLink
+                      to={_route._inhouse_product}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">
                         Inhouse Products
                       </span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link "
+                    <NavLink
+                      to={_route._digital_product}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">
                         Digital Products
                       </span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a href="javascript:void(0);" className="aiz-side-nav-link">
+                    <a href="javascript:void(0);" className="aiz-side-nav-link"  onClick={() => setShowSellerProduct(prev => prev === 'sellerproduct' ? null : 'sellerproduct' )}>
                       <span className="aiz-side-nav-text">Seller Product</span>
                       <span className="aiz-side-nav-arrow" />
                     </a>
-                    <ul className="aiz-side-nav-list level-3 mm-collapse">
+                    <ul className={`aiz-side-nav-list level-3 mm-collapse ${showSellerProduct === 'sellerproduct' && 'mm-show'}`}>
                       <li className="aiz-side-nav-item">
-                        <a
-                          href=""
-                          className="aiz-side-nav-link"
+                        <NavLink
+                          to={_route._physical_product}
+                          className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                         >
                           <span className="aiz-side-nav-text">
                             Physical Products
                           </span>
-                        </a>
+                        </NavLink>
                       </li>
                       <li className="aiz-side-nav-item">
-                        <a
-                          href=""
-                          className="aiz-side-nav-link"
+                        <NavLink
+                          to={_route._seller_digital_product}
+                          className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                         >
                           <span className="aiz-side-nav-text">
                             Digital Products
                           </span>
-                        </a>
+                        </NavLink>
                       </li>
                     </ul>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link "
+                    <NavLink
+                      to={_route._category}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">Category</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link "
+                    <NavLink
+                      to={_route._brand}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">Brand</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link "
+                    <NavLink
+                      to={_route._attribute}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">Attributes</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link"
+                    <NavLink
+                      to={_route._reviews}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">Reviews</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link"
+                    <NavLink
+                      to={_route._bulk_import}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">Bulk Import</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
                     <a
@@ -247,8 +251,8 @@ const SideBar = () => {
                 </ul>
               </li>
               {/* Order */}
-              <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+              <li className={`aiz-side-nav-item  ${showPos === 'order' && 'mm-active'}`}>
+                <a href="javascript:void(0);" className="aiz-side-nav-link" onClick={() => setShowPos(prev => prev === 'order' ? null : 'order' )}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={16}
@@ -265,33 +269,31 @@ const SideBar = () => {
                   <span className="aiz-side-nav-text">Orders</span>
                   <span className="aiz-side-nav-arrow" />
                 </a>
-                <ul className="aiz-side-nav-list level-2 mm-collapse">
+                <ul className={`aiz-side-nav-list level-2 mm-collapse ${showPos === 'order' && 'mm-show'}`}>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link "
+                    <NavLink
+                      to={_route._order}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">Inhouse Orders</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href=""
-                      className="aiz-side-nav-link"
+                    <NavLink
+                      to={_route._seller_order}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">Seller Orders</span>
-                      <span className="badge badge-inline badge-danger">
-                        Addon
-                      </span>
-                    </a>
+            
+                    </NavLink>
                   </li>
                 </ul>
               </li>
               {/* Customers */}
               <li className="aiz-side-nav-item">
-                <a
-                  href=""
-                  className="aiz-side-nav-link "
+                <NavLink
+                  to={_route._customer}
+                  className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -337,11 +339,11 @@ const SideBar = () => {
                     </g>
                   </svg>
                   <span className="aiz-side-nav-text">Customers</span>
-                </a>
+                </NavLink>
               </li>
               {/* Seller */}
-              <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+              <li className={`aiz-side-nav-item  ${showPos === 'seller' && 'mm-active'}`}>
+                <a href="javascript:void(0);" className="aiz-side-nav-link" onClick={() => setShowPos(prev => prev === 'seller' ? null : 'seller' )}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={14}
@@ -357,17 +359,16 @@ const SideBar = () => {
                     />
                   </svg>
                   <span className="aiz-side-nav-text">Seller</span>
-                  <span className="badge badge-inline badge-danger">Addon</span>
                   <span className="aiz-side-nav-arrow" />
                 </a>
-                <ul className="aiz-side-nav-list level-2 mm-collapse">
+                <ul className={`aiz-side-nav-list level-2 mm-collapse ${showPos === 'seller' && 'mm-show'}`}>
                   <li className="aiz-side-nav-item">
-                    <a
-                      href="s"
-                      className="aiz-side-nav-link "
+                    <NavLink
+                      to={_route._seller}
+                      className={(isActive) => "aiz-side-nav-link " + (isActive.isActive && `mm-active` )}
                     >
                       <span className="aiz-side-nav-text">Sellers</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="aiz-side-nav-item">
                     <a
@@ -425,7 +426,7 @@ const SideBar = () => {
               </li>
               {/* Refund */}
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     id="Group_8930"
                     data-name="Group 8930"
@@ -468,7 +469,6 @@ const SideBar = () => {
                     </g>
                   </svg>
                   <span className="aiz-side-nav-text">Refund</span>
-                  <span className="badge badge-inline badge-danger">Addon</span>
                   <span className="aiz-side-nav-arrow" />
                 </a>
                 <ul className="aiz-side-nav-list level-2 mm-collapse">
@@ -492,7 +492,7 @@ const SideBar = () => {
               </li>
               {/* marketing */}
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={16}
@@ -582,7 +582,7 @@ const SideBar = () => {
                 </ul>
               </li>
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     id="Group_23438"
                     data-name="Group 23438"
@@ -761,7 +761,7 @@ const SideBar = () => {
               </li>
               {/* Offline Payment System */}
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     id="Group_23794"
                     data-name="Group 23794"
@@ -862,7 +862,7 @@ const SideBar = () => {
               </li>
               {/* club points System */}
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     id="Group_22520"
                     data-name="Group 22520"
@@ -986,7 +986,7 @@ const SideBar = () => {
               </li>
               {/* Offline Payment System */}
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     id="Group_23794"
                     data-name="Group 23794"
@@ -1069,16 +1069,13 @@ const SideBar = () => {
                       <span className="aiz-side-nav-text">
                         Offline Seller Package Payments
                       </span>
-                      <span className="badge badge-inline badge-danger">
-                        Addon
-                      </span>
                     </a>
                   </li>
                 </ul>
               </li>
               {/* Website Setup */}
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={16}
@@ -1158,7 +1155,7 @@ const SideBar = () => {
               </li>
               {/* Setup & Configurations */}
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={16}
@@ -1189,9 +1186,9 @@ const SideBar = () => {
                       className="aiz-side-nav-link"
                     >
                       <span className="aiz-side-nav-text">Shop Settings</span>
-                      <span className="badge badge-inline badge-danger">
+                      {/* <span className="badge badge-inline badge-danger">
                         Addon
-                      </span>
+                      </span> */}
                     </a>
                   </li>
                   <li className="aiz-side-nav-item">
@@ -1334,7 +1331,7 @@ const SideBar = () => {
               </li>
               {/* Staffs */}
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={14}
@@ -1387,7 +1384,7 @@ const SideBar = () => {
                 </ul>
               </li>
               <li className="aiz-side-nav-item">
-                <a href="#" className="aiz-side-nav-link">
+                <a href="javascript:void(0);" className="aiz-side-nav-link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={16}
@@ -1468,7 +1465,7 @@ const SideBar = () => {
           {/* .aiz-side-nav-wrap */}
         </div>
         {/* .aiz-sidebar */}
-        <div className="aiz-sidebar-overlay" />
+        <div className="aiz-sidebar-overlay" onClick={()=> setMenu(prev => !prev)} />
       </div>
     </>
   );

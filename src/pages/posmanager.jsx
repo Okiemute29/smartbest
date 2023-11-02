@@ -1,16 +1,26 @@
 import SideBar from '../component/sidebar/sidebar'
 import Header from '../component/hearder/header'
+import { useEffect, useState } from 'react';
+import Footer from '../component/footer/footer';
 
 const PosManager = () => {
+  const [menu, setMenu] = useState(false)
+
+  useEffect(()=>{
+    menu ? 
+    document.body.className = 'side-menu-closed'
+    :
+    document.body.className = 'side-menu-open';
+  }, [menu])
   return (
     <>
       <div className="aiz-main-wrapper">
         {/* sidebar */}
-            <SideBar />
+          {!menu && <SideBar setMenu={setMenu} />}
         {/* .aiz-sidebar */}
         <div className="aiz-content-wrapper">
           {/* Header */}
-            <Header />
+            <Header setMenu={setMenu} />
           {/* .aiz-topbar */}
           <div className="aiz-main-content">
             <div className="px-15px px-lg-25px">
@@ -1364,9 +1374,7 @@ const PosManager = () => {
                 </form>
               </section>
             </div>
-            <div className="bg-white text-center py-3 px-15px px-lg-25px mt-auto">
-              <p className="mb-0">© The Shop 2.9</p>
-            </div>
+            <Footer />
           </div>
           {/* .aiz-main-content */}
         </div>

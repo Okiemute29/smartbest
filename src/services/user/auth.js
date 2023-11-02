@@ -6,7 +6,7 @@ const HashPasswordKey = process.env.REACT_APP_BASE_HASH_KEY
 const Authservices = {
   logIn: async (data, source) => {
     return await myApi.post(_logInUser, { email: data.email, password: data.password }, {
-      cancelToken: source.token,
+      // cancelToken: source.token,
     }).then(async (res) => {
       console.log(res)
       return res;
@@ -23,7 +23,7 @@ const Authservices = {
 
   signUp: async (data, source) => {
     return await myApi.post(_signUpUser, data, {
-      cancelToken: source.token,
+      // cancelToken: source.token,
       // withCredentials: true
     }).then((res) => {
       console.log(res)
@@ -37,7 +37,7 @@ const Authservices = {
 
   forgotPassword: async (email, source) => {
     return await myApi.post(_forgotPassword, { username: email }, {
-      cancelToken: source.token
+      // cancelToken: source.token
     })
 
   },
