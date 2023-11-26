@@ -28,6 +28,7 @@ const Dashboard = () => {
     getAllBrand()
   }, [])
 
+  console.log(data)
   
   return (
     <>
@@ -343,15 +344,18 @@ const Dashboard = () => {
                     <div className="fs-16 fw-700 mb-2">Top Category</div>
                     <ul className="list-group list-group-raw">
                     {
-                          categoryLoading ? <p>loading</p> :categoryData?.map((category, index)=>{
+                          categoryLoading ? <p>loading</p> :categoryData?.slice(0, 5).map((category, index)=>{
                             return (
                               <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                                <img alt=''
+                                {/* <img alt=''
                                   src={category.category_image}
                                   data-src={category.category_image}
                                   className="size-50px rounded lazyloaded"
                                   onerror={`this.onerror=null;this.src=${placeholder};`}
-                                />
+                                /> */}
+                                <div className='d-flex align-items-center size-50px name-logo'>
+                                    <p className='mb-0'>{category.category.charAt(0).toUpperCase()}</p>
+                                  </div>
                                 <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
                                   {category.category}
                                 </div>
@@ -362,76 +366,6 @@ const Dashboard = () => {
                             )
                           })
                         }
-                      {/* <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <img alt=''
-                          src="https://shop.activeitzone.com/public/uploads/all/D5dhekz6XMXvgXrjAxBrHvXGWvIEX2advil097AT.png"
-                          data-src="https://shop.activeitzone.com/public/uploads/all/D5dhekz6XMXvgXrjAxBrHvXGWvIEX2advil097AT.png"
-                          className="size-50px rounded lazyloaded"
-                          onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                        />
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Smartphones
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $16,294.40
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <img alt=''
-                          src="https://shop.activeitzone.com/public/uploads/all/uazXsowjuJ4ESShXDqGxf0SjlGQlyIwnm8yxNZEr.png"
-                          data-src="https://shop.activeitzone.com/public/uploads/all/uazXsowjuJ4ESShXDqGxf0SjlGQlyIwnm8yxNZEr.png"
-                          className="size-50px rounded lazyloaded"
-                          onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                        />
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Computer &amp; Accessories
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $15,736.45
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <img alt=''
-                          src="https://shop.activeitzone.com/public/uploads/all/QFr6jOK360KnwVvONku4UnJzpIrY2M0314pWkXK9.png"
-                          data-src="https://shop.activeitzone.com/public/uploads/all/QFr6jOK360KnwVvONku4UnJzpIrY2M0314pWkXK9.png"
-                          className="size-50px rounded lazyloaded"
-                          onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                        />
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Women Clothing &amp; Fashion
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $8,653.83
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <img alt=''
-                          src="https://shop.activeitzone.com/public/uploads/all/p7GDjaYAa9lLs32Zd1LqmXLze3ywrhOahKnNtNi6.png"
-                          data-src="https://shop.activeitzone.com/public/uploads/all/p7GDjaYAa9lLs32Zd1LqmXLze3ywrhOahKnNtNi6.png"
-                          className="size-50px rounded lazyloaded"
-                          onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                        />
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Automobile &amp; Motorcycle
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $7,029.83
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <img alt=''
-                          src="https://shop.activeitzone.com/public/uploads/all/b1W2DDYY7AiuHEMkOGZK57snOz1qXj5A0heRFbxh.png"
-                          data-src="https://shop.activeitzone.com/public/uploads/all/b1W2DDYY7AiuHEMkOGZK57snOz1qXj5A0heRFbxh.png"
-                          className="size-50px rounded lazyloaded"
-                          onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                        />
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Car accessories
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $5,253.38
-                        </div>
-                      </li> */}
                     </ul>
                   </div>
                 </div>
@@ -439,102 +373,34 @@ const Dashboard = () => {
                   <div className="border rounded-lg px-4 pt-4 pb-3">
                     <div className="fs-16 fw-700 mb-2">Top Brands</div>
                     <ul className="list-group list-group-raw">
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <span className="d-flex align-items-center size-50px">
-                          <img alt=''
-                            src="https://shop.activeitzone.com/public/uploads/all/TRcc8CiQwf6YXDPVPNtmaZ6RQZDyFtDGxWZ2fuIb.png"
-                            data-src="https://shop.activeitzone.com/public/uploads/all/TRcc8CiQwf6YXDPVPNtmaZ6RQZDyFtDGxWZ2fuIb.png"
-                            className="mw-100 mh-100 rounded lazyloaded"
-                            onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                          />
-                        </span>
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Apple
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $10,604.50
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <span className="d-flex align-items-center size-50px">
-                          <img alt=''
-                            src="https://shop.activeitzone.com/public/uploads/all/al5TKVSD1W9yw8tyi1E7gRhzkSTqDQ1SWOsLSNZY.png"
-                            data-src="https://shop.activeitzone.com/public/uploads/all/al5TKVSD1W9yw8tyi1E7gRhzkSTqDQ1SWOsLSNZY.png"
-                            className="mw-100 mh-100 rounded lazyloaded"
-                            onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                          />
-                        </span>
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          HERMES
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $6,552.40
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <span className="d-flex align-items-center size-50px">
-                          <img alt=''
-                            src="https://shop.activeitzone.com/public/uploads/all/Z9Y4p2xXqWuJ3hJIj9j7ifqfkCAutoCvAbIBFL8i.png"
-                            data-src="https://shop.activeitzone.com/public/uploads/all/Z9Y4p2xXqWuJ3hJIj9j7ifqfkCAutoCvAbIBFL8i.png"
-                            className="mw-100 mh-100 rounded lazyloaded"
-                            onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                          />
-                        </span>
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Asus
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $6,178.48
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <span className="d-flex align-items-center size-50px">
-                          <img alt=''
-                            src="https://shop.activeitzone.com/public/uploads/all/TVLVGJ6YtUhDFctQT3J43q9CcAs2CpxWg3DoJlGC.png"
-                            data-src="https://shop.activeitzone.com/public/uploads/all/TVLVGJ6YtUhDFctQT3J43q9CcAs2CpxWg3DoJlGC.png"
-                            className="mw-100 mh-100 rounded lazyloaded"
-                            onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                          />
-                        </span>
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          One Plus
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $5,567.10
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <span className="d-flex align-items-center size-50px">
-                          <img alt=''
-                            src="https://shop.activeitzone.com/public/uploads/all/RMnxStCCvQFavNhqUCzqJFaiaTvSUcbR5jzv2LGn.png"
-                            data-src="https://shop.activeitzone.com/public/uploads/all/RMnxStCCvQFavNhqUCzqJFaiaTvSUcbR5jzv2LGn.png"
-                            className="mw-100 mh-100 rounded lazyloaded"
-                            onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                          />
-                        </span>
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          Mobil
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $3,263.53
-                        </div>
-                      </li>
-                      <li className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
-                        <span className="d-flex align-items-center size-50px">
-                          <img alt=''
-                            src="https://shop.activeitzone.com/public/uploads/all/jJt6OUUCu3RZfarr1TH8x6Ag9Cjss7sTNYPD5SRV.png"
-                            data-src="https://shop.activeitzone.com/public/uploads/all/jJt6OUUCu3RZfarr1TH8x6Ag9Cjss7sTNYPD5SRV.png"
-                            className="mw-100 mh-100 rounded lazyloaded"
-                            onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
-                          />
-                        </span>
-                        <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
-                          LOUIS VUITTON
-                        </div>
-                        <div className="ml-auto mr-0 fw-600 text-danger">
-                          $2,998.09
-                        </div>
-                      </li>
+                      {
+                        brandLoading ? 
+                          <p>Loading...</p> 
+                        : 
+                          brandData?.slice(0, 5).map((brand, index)=> {
+                            return (
+                              <li key={brand._id} className="list-group-item d-flex align-items-center px-0 py-5px mt-1">
+                                <span className="d-flex align-items-center size-50px">
+                                  {/* <img alt=''
+                                    src="https://shop.activeitzone.com/public/uploads/all/TRcc8CiQwf6YXDPVPNtmaZ6RQZDyFtDGxWZ2fuIb.png"
+                                    data-src="https://shop.activeitzone.com/public/uploads/all/TRcc8CiQwf6YXDPVPNtmaZ6RQZDyFtDGxWZ2fuIb.png"
+                                    className="mw-100 mh-100 rounded lazyloaded"
+                                    onerror="this.onerror=null;this.src='https://shop.activeitzone.com/public//assets/img/placeholder.jpg';"
+                                  /> */}
+                                  <div className='d-flex align-items-center size-50px name-logo'>
+                                    <p className='mb-0'>{brand.brand.charAt(0).toUpperCase()}</p>
+                                  </div>
+                                </span>
+                                <div className="minw-0 flex-grow-1 text-truncate-2 mx-3">
+                                  {brand.brand}
+                                </div>
+                                <div className="ml-auto mr-0 fw-600 text-danger">
+                                  $10,604.50
+                                </div>
+                              </li>
+                            )
+                          })
+                      }
                     </ul>
                   </div>
                 </div>
